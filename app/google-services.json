@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "849727156636",
+    "project_id": "motomeet-1dc29",
+    "storage_bucket": "motomeet-1dc29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849727156636:android:4726aefca7b55727d11859",
+        "android_client_info": {
+          "package_name": "com.example.motomeet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849727156636-it3sh0ssuv9qjf8f37ivqg18fsr3ck0b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.motomeet",
+            "certificate_hash": "481d015a85eed5a70fe602f027981b64d2812f37"
+          }
+        },
+        {
+          "client_id": "849727156636-m4972f93ml6bsidr3ci3nga3rfltg37n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAd6SQFWjbAvCWqVpy005-A-X1Tfd5e9V4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849727156636-m4972f93ml6bsidr3ci3nga3rfltg37n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
