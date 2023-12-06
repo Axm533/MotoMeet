@@ -6,8 +6,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profImage"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_margin="8dp"
         app:civ_border_color="#434343"
         app:civ_border_width="1dp"
@@ -15,7 +15,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:layout_toEndOf="@id/profImage"
         android:gravity="center_vertical"
         android:orientation="vertical"
@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/timeTv"
             android:text="time of posting"
-            android:textStyle="bold"
             android:textColor="#000"/>
 
     </LinearLayout>
@@ -54,12 +53,12 @@
         android:orientation="horizontal"
         android:layout_below="@id/imageView">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <CheckBox
             android:id="@+id/likeBtn"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:layout_margin="8dp"
-            android:background="@drawable/baseline_favorite_border_24"/>
+            android:button="@drawable/heart_check" />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -96,5 +95,14 @@
         android:layout_below="@id/descTv"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/commentTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/likeCountTv"
+        android:padding="8dp"
+        android:text="View all comments"
+        android:visibility="gone" />
 
 </RelativeLayout>

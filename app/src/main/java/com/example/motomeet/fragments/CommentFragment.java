@@ -1,6 +1,7 @@
 package com.example.motomeet.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 
 public class CommentFragment extends Fragment {
-
     EditText commentEt;
     ImageButton sendBtn;
     RecyclerView recyclerView;
@@ -43,10 +43,8 @@ public class CommentFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comment, container, false);
     }
@@ -57,8 +55,9 @@ public class CommentFragment extends Fragment {
 
         init(view);
 
-        reference = FirebaseFirestore.getInstance().collection("Users")
-                .document(uid)
+        Log.d("LOG commfrag", "UID"+uid + "\n\n" + "id"+id);
+
+        reference = FirebaseFirestore.getInstance().collection("Users").document(uid)
                 .collection("Post Images")
                 .document(id)
                 .collection("Comments");
@@ -66,7 +65,6 @@ public class CommentFragment extends Fragment {
         loadCommentData();
 
         clickListener();
-
     }
 
 
@@ -81,7 +79,6 @@ public class CommentFragment extends Fragment {
                 return;
             }
 
-
             String commentID = reference.document().getId();
 
             Map<String, Object> map = new HashMap<>();
@@ -91,7 +88,8 @@ public class CommentFragment extends Fragment {
             map.put("postID", id);
 
             map.put("name", user.getDisplayName());
-            map.put("profileImageUrl", user.getPhotoUrl().toString());
+            //map.put("profileImageUrl", user.getPhotoUrl().toString());
+            map.put("profileImageUrl", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwp--EwtYaxkfsSPIpoSPucdbxAo6PancQX1gw6ETSKI6_pGNCZY4ts1N6BV5ZcN3wPbA&usqp=CAU");
 
             reference.document(commentID)
                     .set(map)
@@ -153,11 +151,13 @@ public class CommentFragment extends Fragment {
         commentAdapter = new CommentAdapter(getContext(), list);
         recyclerView.setAdapter(commentAdapter);
 
-        if (getArguments() == null)
+        Log.d("LOG commfrag init", String.valueOf(getActivity().getIntent().getExtras()));
+
+        if (getActivity().getIntent().getExtras() == null)
             return;
 
-        id = getArguments().getString("id");
-        uid = getArguments().getString("uid");
+        id = getActivity().getIntent().getExtras().getString("id");
+        uid = getActivity().getIntent().getExtras().getString("uid");
 
     }
 

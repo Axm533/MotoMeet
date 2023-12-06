@@ -135,29 +135,26 @@ public class AddFragment extends Fragment {
     }
     private void uploadData(String imageURL) {
 
-        CollectionReference reference = FirebaseFirestore.getInstance().collection("Users")
+        CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users")
                 .document(user.getUid()).collection("Post Images");
 
-        String id = reference.document().getId();
+        String id = collectionReference.document().getId();
 
         String description = descET.getText().toString();
 
-        List<String> list = new ArrayList<>();
+        List<String> likes = new ArrayList<>();
 
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
         map.put("description", description);
         map.put("imageUrl", imageURL);
         map.put("timestamp", FieldValue.serverTimestamp());
-
         map.put("name", user.getDisplayName());
         map.put("profileImage", String.valueOf(user.getPhotoUrl()));
-
-        map.put("likes", list);
-
+        map.put("likes", likes);
         map.put("uid", user.getUid());
 
-        reference.document(id).set(map)
+        collectionReference.document(id).set(map)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         System.out.println();

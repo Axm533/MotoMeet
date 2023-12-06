@@ -96,15 +96,13 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment(){
 
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
@@ -177,13 +175,16 @@ public class ProfileFragment extends Fragment {
 
     private void clickListener()
     {
-        /*menuBtn.setOnClickListener(new View.OnClickListener() {
+        menuBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                auth.signOut();
-                startActivity(new Intent(getContext().getApplicationContext(), ReplacerActivity.class));
+                if(auth.getCurrentUser() != null)
+                    auth.signOut();
+
+                startActivity(new Intent(getActivity().getApplicationContext(), ReplacerActivity.class));
+
             }
-        });*/
+        });
 
         editProfPic.setOnClickListener(v -> CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
@@ -452,13 +453,8 @@ public class ProfileFragment extends Fragment {
 
             if (result == null)
                 return;
-
-            Uri uri = result.getUri();
-
-            uploadImage(uri);
-
+            uploadImage(result.getUri());
         }
-
     }
 
     private void uploadImage(Uri uri) {

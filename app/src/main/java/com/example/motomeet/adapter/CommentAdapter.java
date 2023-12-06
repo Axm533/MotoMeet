@@ -41,6 +41,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
         Glide.with(context)
                 .load(list.get(position).getProfileImageUrl())
+                .placeholder(R.drawable.baseline_person_24)
+                .timeout(6500)
                 .into(holder.profileImage);
 
         holder.nameTv.setText(list.get(position).getName());

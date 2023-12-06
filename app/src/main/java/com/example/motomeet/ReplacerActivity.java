@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentTransaction;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import com.example.motomeet.fragments.CommentFragment;
 import com.example.motomeet.fragments.CreateAccountFragment;
 import com.example.motomeet.fragments.LoginFragment;
+
+import org.w3c.dom.Comment;
 
 public class ReplacerActivity extends AppCompatActivity {
     private FrameLayout frameLayout;
@@ -20,7 +23,12 @@ public class ReplacerActivity extends AppCompatActivity {
 
         frameLayout = findViewById(R.id.frameLayout);
 
-        setFragment(new LoginFragment());
+        boolean isComment = getIntent().getBooleanExtra("isComment", false);
+
+        if (isComment)
+            setFragment(new CommentFragment());
+        else
+            setFragment(new LoginFragment());
     }
 
     public void setFragment(Fragment fragment){
@@ -29,6 +37,17 @@ public class ReplacerActivity extends AppCompatActivity {
 
         if(fragment instanceof CreateAccountFragment){
             fragmentTransaction.addToBackStack(null);
+        }
+
+        if (fragment instanceof Comment){
+
+            String id = getIntent().getStringExtra("id");
+            String uid = getIntent().getStringExtra("uid");
+
+            Bundle bundle = new Bundle();
+            bundle.putString("id", id);
+            bundle.putString("uid", uid);
+            fragment.setArguments(bundle);
         }
 
         fragmentTransaction.replace(frameLayout.getId(), fragment);
