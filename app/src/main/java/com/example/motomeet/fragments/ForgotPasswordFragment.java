@@ -24,86 +24,65 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordFragment extends Fragment {
-
     private TextView returnToLoginTv;
     private Button recoverBtn;
     private EditText emailEt;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
-
     public ForgotPasswordFragment() {
-        // Required empty public constructor
     }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_forgot_password, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         init(view);
-
         clickListener();
     }
 
     private void init(View view) {
-
         returnToLoginTv = view.findViewById(R.id.returnToLoginTV);
         recoverBtn = view.findViewById(R.id.recoverBtn);
         emailEt = view.findViewById(R.id.emailET);
         progressBar = view.findViewById(R.id.progressBar);
 
         auth = FirebaseAuth.getInstance();
-
     }
 
     private void clickListener(){
 
-        returnToLoginTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReplacerActivity) getActivity()).setFragment(new LoginFragment());
+        returnToLoginTv.setOnClickListener(v -> ((ReplacerActivity) getActivity()).setFragment(new LoginFragment()));
+
+        recoverBtn.setOnClickListener(v -> {
+
+            String email = emailEt.getText().toString();
+
+            if(email.isEmpty() || !email.matches(EMAIL_REGEX)){
+                emailEt.setError("Invalid email");
+                return;
             }
-        });
 
-        recoverBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            progressBar.setVisibility(View.VISIBLE);
 
-                String email = emailEt.getText().toString();
+            auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(task -> {
 
-                if(email.isEmpty() || !email.matches(EMAIL_REGEX)){
-                    emailEt.setError("Invalid email");
-                    return;
-                }
+                        if(task.isSuccessful()){
+                            Toast.makeText(getContext(), "Email sent",
+                                    Toast.LENGTH_SHORT).show();
 
-                progressBar.setVisibility(View.VISIBLE);
+                            emailEt.setText("");
+                        }else{
+                            Toast.makeText(getContext(), "Error: "+task.getException().getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
 
-                auth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                        progressBar.setVisibility(View.GONE);
+                    });
 
-                                if(task.isSuccessful()){
-                                    Toast.makeText(getContext(), "Email sent",
-                                            Toast.LENGTH_SHORT).show();
-
-                                    emailEt.setText("");
-                                }else{
-                                    Toast.makeText(getContext(), "Error: "+task.getException().getMessage(),
-                                            Toast.LENGTH_SHORT).show();
-                                }
-
-                                progressBar.setVisibility(View.GONE);
-                            }
-                        });
-
-            }
         });
 
     }

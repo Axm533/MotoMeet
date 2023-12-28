@@ -46,12 +46,10 @@ public class CreateAccountFragment extends Fragment {
     public static final String EMAIL_REGEX = "^(.+)@(.+)$";
 
     public CreateAccountFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_account, container, false);
     }
 
@@ -111,6 +109,37 @@ public class CreateAccountFragment extends Fragment {
         });
     }
 
+    private void createAccount(String name, String email, String password){
+
+        auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+
+                    if(task.isSuccessful()){
+
+                        FirebaseUser user = auth.getCurrentUser();
+
+                        UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name).build();
+
+                        assert user != null;
+                        user.updateProfile(request);
+
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(task1 -> {
+                                    if(task1.isSuccessful()){
+                                        Toast.makeText(getContext(), "Email verification link send", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                        uploadUser(user, name, email);
+
+                    }else{
+                        progressBar.setVisibility(View.GONE);
+                        Log.d(TAG,"createUserWithEmail:failure");
+                        Toast.makeText(getContext(), "Error"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void uploadUser(FirebaseUser user , String name, String email){
 
         List<String> followersList = new ArrayList<>();
@@ -126,58 +155,17 @@ public class CreateAccountFragment extends Fragment {
         map.put("followers", followersList);
         map.put("status", " ");
 
-
         FirebaseFirestore.getInstance().collection("Users").document(user.getUid())
                 .set(map)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            assert getActivity() != null;
-                            progressBar.setVisibility(View.GONE);
-                            startActivity(new Intent(getContext().getApplicationContext(), MainActivity.class));
-                            getActivity().finish();
-                        }else{
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getContext(), "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void createAccount(String name, String email, String password){
-
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-
-                        if(task.isSuccessful()){
-
-                            FirebaseUser user = auth.getCurrentUser();
-
-                            UserProfileChangeRequest request = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(name).build();
-                            //request.setPhotoUri(Uri.parse(image));
-
-                            user.updateProfile(request);
-
-                            user.sendEmailVerification()
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(getContext(), "Email verification link send", Toast.LENGTH_SHORT).show();
-                                            }
-                                        }
-                                    });
-                            uploadUser(user, name, email);
-
-                        }else{
-                            progressBar.setVisibility(View.GONE);
-                            Log.d(TAG,"createUserWithEmail:failure");
-                            Toast.makeText(getContext(), "Error"+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        assert getActivity() != null;
+                        progressBar.setVisibility(View.GONE);
+                        startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class));
+                        getActivity().finish();
+                    }else{
+                        progressBar.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

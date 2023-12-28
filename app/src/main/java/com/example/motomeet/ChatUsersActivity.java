@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatUsersActivity extends AppCompatActivity {
-
     ChatUserAdapter adapter;
     List<ChatUserModel> list;
     FirebaseUser user;
@@ -30,31 +29,22 @@ public class ChatUsersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat_users);
 
         init();
-
         fetchUserData();
-
         clickListener();
-
     }
 
     void init() {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
-
         list = new ArrayList<>();
         adapter = new ChatUserAdapter(this, list);
 
-
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         recyclerView.setAdapter(adapter);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-
-
     }
-
 
     void fetchUserData() {
 
@@ -62,17 +52,8 @@ public class ChatUsersActivity extends AppCompatActivity {
         reference.whereArrayContains("uid", user.getUid())
                 .addSnapshotListener((value, error) -> {
 
-                    if (error != null)
+                    if (error != null || value ==null || value.isEmpty())
                         return;
-
-                    if (value == null)
-                        return;
-
-
-
-                    if (value.isEmpty())
-                        return;
-
 
                     list.clear();
                     for (QueryDocumentSnapshot snapshot : value) {
@@ -83,14 +64,10 @@ public class ChatUsersActivity extends AppCompatActivity {
                         }
 
                     }
-
                     adapter.notifyDataSetChanged();
-
                 });
 
-
     }
-
 
     void clickListener() {
 
@@ -107,8 +84,6 @@ public class ChatUsersActivity extends AppCompatActivity {
             intent.putExtra("uid", oppositeUID);
             intent.putExtra("id", chatID);
             startActivity(intent);
-
-
         });
 
     }

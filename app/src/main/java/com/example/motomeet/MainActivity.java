@@ -5,6 +5,8 @@ import static com.example.motomeet.utils.Constants.PREF_NAME;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.SharedPreferences;
@@ -13,6 +15,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 
 import com.example.motomeet.adapter.ViewPagerAdapter;
@@ -25,7 +28,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements SearchFragment.OnDataPass {
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
     public static boolean IS_SEARCHED_USER = false;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private RelativeLayout relativeLayout;
     ViewPagerAdapter viewPagerAdapter;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -47,20 +53,20 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
     private void init(){
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
+        relativeLayout = findViewById(R.id.relativeLayoutMain);
     }
     private void addTabs(){
 
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.outline_home_24));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.baseline_search_24));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.outline_add_box_24));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.outline_notifications_24));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.baseline_person_outline_24));
+        List<Integer> iconsList = new ArrayList<>();
+        iconsList.add(R.drawable.outline_home_24);
+        iconsList.add(R.drawable.baseline_search_24);
+        iconsList.add(R.drawable.outline_add_box_24);
+        iconsList.add(R.drawable.outline_notifications_24);
+        iconsList.add(R.drawable.baseline_person_outline_24);
 
-        SharedPreferences preferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        String directory = preferences.getString(PREF_DIRECTORY, "");
-
-        Bitmap bitmap = loadProfileImage(directory);
-        Drawable drawable = new BitmapDrawable(getResources(), bitmap);
+        for(int i = 0; i < 5; i++){
+            tabLayout.addTab(tabLayout.newTab().setIcon(iconsList.get(i)));
+        }
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
@@ -196,15 +202,11 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                 .update(map);
     }
 
-    private Bitmap loadProfileImage(String directory) {
-
-        try {
-            File file = new File(directory, "profile.png");
-            return BitmapFactory.decodeStream(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public void switchFragment(Fragment fragment){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        fragmentTransaction.replace(relativeLayout.getId(), fragment);
+        fragmentTransaction.commit();
     }
 
 }

@@ -45,7 +45,6 @@ public class CommentFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_comment, container, false);
     }
 
@@ -88,8 +87,8 @@ public class CommentFragment extends Fragment {
             map.put("postID", id);
 
             map.put("name", user.getDisplayName());
-            //map.put("profileImageUrl", user.getPhotoUrl().toString());
-            map.put("profileImageUrl", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwp--EwtYaxkfsSPIpoSPucdbxAo6PancQX1gw6ETSKI6_pGNCZY4ts1N6BV5ZcN3wPbA&usqp=CAU");
+            map.put("profileImageUrl", user.getPhotoUrl().toString());
+            //map.put("profileImageUrl", "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwp--EwtYaxkfsSPIpoSPucdbxAo6PancQX1gw6ETSKI6_pGNCZY4ts1N6BV5ZcN3wPbA&usqp=CAU");
 
             reference.document(commentID)
                     .set(map)

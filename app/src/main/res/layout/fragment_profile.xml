@@ -31,19 +31,6 @@
                 android:textSize="18dp"
                 android:textColor="@color/black"/>
 
-            <ImageButton
-                android:id="@+id/menuBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginBottom="12dp"
-                android:background="@drawable/baseline_menu_24"
-                android:contentDescription="@null" />
-
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -77,14 +64,13 @@
                 android:background="@drawable/baseline_circle_24"
                 android:elevation="3dp"
                 android:src="@drawable/baseline_edit_24"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
         </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/profileImage"
             android:orientation="vertical"
             android:gravity="center"
             android:layout_gravity="center_vertical">
@@ -96,7 +82,8 @@
                 android:id="@+id/nameTV"
                 android:text="Username"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:padding="4dp"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -105,7 +92,8 @@
                 android:id="@+id/statusTV"
                 android:text="Status"
                 android:textStyle="bold"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black"
+                android:padding="4dp"/>
 
         </LinearLayout>
 
@@ -225,7 +213,7 @@
                 android:layout_marginEnd="4dp"
                 android:background="@drawable/btn_bg"
                 android:minWidth="160dp"
-                android:text="Say Hi !"
+                android:text="Send message"
                 android:textColor="@android:color/white"
                 android:visibility="gone" />
 

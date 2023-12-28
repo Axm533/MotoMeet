@@ -29,18 +29,14 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
-
     FirebaseUser user;
     CircleImageView imageView;
     TextView name, status;
     EditText chatET;
     ImageView sendBtn;
     RecyclerView recyclerView;
-
     ChatAdapter adapter;
     List<ChatModel> list;
-
-
     String chatID;
 
     @Override
@@ -49,27 +45,21 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         init();
-
         loadUserData();
-
         loadMessages();
 
         sendBtn.setOnClickListener(v -> {
 
             String message = chatET.getText().toString().trim();
 
-            if (message.isEmpty()) {
+            if (message.isEmpty())
                 return;
-            }
 
             CollectionReference reference = FirebaseFirestore.getInstance().collection("Messages");
 
-
             Map<String, Object> map = new HashMap<>();
-
             map.put("lastMessage", message);
             map.put("time", FieldValue.serverTimestamp());
-
 
             reference.document(chatID).update(map);
 
@@ -84,7 +74,6 @@ public class ChatActivity extends AppCompatActivity {
             messageMap.put("message", message);
             messageMap.put("senderID", user.getUid());
             messageMap.put("time", FieldValue.serverTimestamp());
-
 
             reference.document(chatID).collection("Messages").document(messageID).set(messageMap)
                     .addOnCompleteListener(task -> {
@@ -127,25 +116,14 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection("Users").document(oppositeUID)
                 .addSnapshotListener((value, error) -> {
 
-                    if (error != null)
-                        return;
+                    if (error != null || value == null || !value.exists()) return;
 
-                    if (value == null)
-                        return;
-
-
-                    if (!value.exists())
-                        return;
-
-                    //
                     boolean isOnline = Boolean.TRUE.equals(value.getBoolean("online"));
                     status.setText(isOnline ? "Online" : "Offline");
 
                     Glide.with(getApplicationContext()).load(value.getString("profileImage")).into(imageView);
 
                     name.setText(value.getString("name"));
-
-
                 });
 
     }
@@ -154,16 +132,12 @@ public class ChatActivity extends AppCompatActivity {
 
         chatID = getIntent().getStringExtra("id");
 
-
         CollectionReference reference = FirebaseFirestore.getInstance()
                 .collection("Messages")
                 .document(chatID)
                 .collection("Messages");
 
-        reference
-                .orderBy("time", Query.Direction.ASCENDING)
-                .addSnapshotListener((value, error) -> {
-
+        reference.orderBy("time", Query.Direction.ASCENDING).addSnapshotListener((value, error) -> {
 
                     if (error != null) return;
 
@@ -181,5 +155,4 @@ public class ChatActivity extends AppCompatActivity {
                 });
 
     }
-
 }

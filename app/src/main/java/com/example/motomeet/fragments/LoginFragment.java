@@ -34,12 +34,10 @@ public class LoginFragment extends Fragment {
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     public LoginFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
@@ -62,58 +60,42 @@ public class LoginFragment extends Fragment {
     }
     private void clickListener(){
 
-        signInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        signInBtn.setOnClickListener(v -> {
 
-                String email = emailEt.getText().toString();
-                String password = passwordEt.getText().toString();
+            String email = emailEt.getText().toString();
+            String password = passwordEt.getText().toString();
 
-                if(email.isEmpty() || !email.matches(EMAIL_REGEX)){
-                    emailEt.setError("Invalid email");
-                    return;
-                }
+            if(email.isEmpty() || !email.matches(EMAIL_REGEX)){
+                emailEt.setError("Invalid email");
+                return;
+            }
 
-                if(password.isEmpty() || password.length() < 6){
-                    passwordEt.setError("Invalid password");
-                    return;
-                }
+            if(password.isEmpty() || password.length() < 6){
+                passwordEt.setError("Invalid password");
+                return;
+            }
 
-                progressBar.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
 
-                auth.signInWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    FirebaseUser user = auth.getCurrentUser();
-                                    if(!user.isEmailVerified()){
-                                        Toast.makeText(getContext(), "Verify your email", Toast.LENGTH_SHORT).show();
-                                    }
-
-                                    sendUserToMainActivity();
-                                }else{
-                                    Toast.makeText(getContext(), "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.GONE);
-                                }
+            auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            FirebaseUser user = auth.getCurrentUser();
+                            if(!user.isEmailVerified()){
+                                Toast.makeText(getContext(), "Verify your email", Toast.LENGTH_SHORT).show();
                             }
-                        });
-            }
+
+                            sendUserToMainActivity();
+                        }else{
+                            Toast.makeText(getContext(), "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
         });
 
-        signUpTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReplacerActivity) getActivity()).setFragment(new CreateAccountFragment());
-            }
-        });
+        signUpTv.setOnClickListener(v -> ((ReplacerActivity) getActivity()).setFragment(new CreateAccountFragment()));
 
-        forgotPasswordTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((ReplacerActivity) getActivity()).setFragment(new ForgotPasswordFragment());
-            }
-        });
+        forgotPasswordTv.setOnClickListener(v -> ((ReplacerActivity) getActivity()).setFragment(new ForgotPasswordFragment()));
     }
     private void sendUserToMainActivity(){
 

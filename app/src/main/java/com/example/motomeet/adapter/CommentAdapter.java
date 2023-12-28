@@ -18,10 +18,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentHolder> {
-
     Context context;
     List<CommentModel> list;
-
     public CommentAdapter(Context context, List<CommentModel> list) {
         this.context = context;
         this.list = list;
@@ -30,9 +28,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
     @NonNull
     @Override
     public CommentHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from(parent.getContext())
-                .inflate(R.layout.comment_items, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_items, parent, false);
         return new CommentHolder(view);
     }
 
@@ -47,7 +43,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentH
 
         holder.nameTv.setText(list.get(position).getName());
         holder.commentTv.setText(list.get(position).getComment());
-
     }
 
     @Override

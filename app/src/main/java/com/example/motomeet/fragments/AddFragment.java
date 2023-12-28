@@ -65,14 +65,10 @@ public class AddFragment extends Fragment {
     private List<GalleryImages> list;
     private GalleryAdapter adapter;
     private FirebaseUser user;
-    public AddFragment() {
-        // Required empty public constructor
-    }
+    public AddFragment() {}
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_add, container, false);
     }
 
@@ -135,8 +131,7 @@ public class AddFragment extends Fragment {
     }
     private void uploadData(String imageURL) {
 
-        CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users")
-                .document(user.getUid()).collection("Post Images");
+        CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).collection("Post Images");
 
         String id = collectionReference.document().getId();
 
@@ -157,7 +152,6 @@ public class AddFragment extends Fragment {
         collectionReference.document(id).set(map)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        System.out.println();
                         Toast.makeText(getContext(), "Uploaded", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "Error: " + task.getException().getMessage(),

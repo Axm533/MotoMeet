@@ -1,5 +1,6 @@
 package com.example.motomeet.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -45,6 +46,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         return new HomeHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull HomeHolder holder, int position) {
 
@@ -65,7 +67,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
             holder.likeCountTv.setText(likesCount + " likes");
         }
 
-        holder.likeCheckBox.setChecked(likes.contains(user.getUid()));
+        //assert user != null;
+        if(user != null)
+        {
+            holder.likeCheckBox.setChecked(likes.contains(user.getUid()));
+        }else{
+            holder.likeCheckBox.setChecked(false);
+        }
 
         holder.descriptionTv.setText(list.get(position).getDescription());
 

@@ -39,7 +39,7 @@ public class ReplacerActivity extends AppCompatActivity {
             fragmentTransaction.addToBackStack(null);
         }
 
-        if (fragment instanceof Comment){
+        if (fragment instanceof CommentFragment){
 
             String id = getIntent().getStringExtra("id");
             String uid = getIntent().getStringExtra("uid");
