@@ -2,7 +2,6 @@ package com.example.motomeet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +18,11 @@ import com.example.motomeet.MainActivity;
 import com.example.motomeet.R;
 import com.example.motomeet.adapter.CostJournalAdapter;
 import com.example.motomeet.model.CostJournalModel;
-import com.example.motomeet.model.ServiceBookModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ import java.util.List;
 
 public class CostJournalFragment extends Fragment {
 
-    private List<CostJournalModel> entriesList;
+    private List<CostJournalModel> list;
 
     CostJournalAdapter adapter;
 
@@ -59,7 +58,7 @@ public class CostJournalFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         init(view);
-        adapter = new CostJournalAdapter(entriesList);
+        adapter = new CostJournalAdapter(list);
         recyclerView.setAdapter(adapter);
         loadEntries();
 
@@ -71,7 +70,7 @@ public class CostJournalFragment extends Fragment {
     private void init(View view) {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        entriesList = new ArrayList<>();
+        list = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.recyclerViewCostJournal);
         recyclerView.setHasFixedSize(true);
@@ -83,33 +82,25 @@ public class CostJournalFragment extends Fragment {
     }
 
     private void loadEntries() {
+        list.clear();
 
         final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).collection("CostJournal");
 
-        collectionReference.addSnapshotListener((value, error) -> {
+        collectionReference.orderBy("entryDate", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
 
-            if(error != null) {
-                Log.d("loadEntries error: ", error.getMessage());
-                return;
-            }
+            if(error != null) return;
 
-            if(value == null)
-                return;
+            if(value == null) return;
+
+            list.clear();
 
             for(QueryDocumentSnapshot snapshot : value){
-                if(!snapshot.exists())
-                    return;
+                if(!snapshot.exists()) return;
 
                 CostJournalModel model = snapshot.toObject(CostJournalModel.class);
 
-                entriesList.add(new CostJournalModel(
-                        model.getFuelCost(),
-                        model.getEntryDate(),
-                        model.getHighwayCost(),
-                        model.getAdditionalCost(),
-                        model.getId(),
-                        model.getUid(),
-                        model.getTimestamp()));
+                list.add(model);
 
             }
             adapter.notifyDataSetChanged();

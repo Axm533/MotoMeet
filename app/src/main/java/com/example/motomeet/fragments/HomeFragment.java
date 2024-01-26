@@ -1,9 +1,6 @@
 package com.example.motomeet.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,22 +12,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.motomeet.ChatUsersActivity;
 import com.example.motomeet.MainActivity;
@@ -41,41 +32,33 @@ import com.example.motomeet.model.HomeModel;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
-    private final MutableLiveData<Integer> commentCount = new MutableLiveData<>();
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     public DrawerLayout drawerLayout;
-
     public NavigationView navigationView;
     public ActionBarDrawerToggle actionBarDrawerToggle;
     HomeAdapter adapter;
     private List<HomeModel> list;
     private FirebaseUser user;
-
     private FirebaseAuth auth;
-    Activity activity;
     private ImageButton sendBtn;
-    private Context context;
 
     final int navServiceBookId = R.id.nav_service_book;
     final int navCostJournalId = R.id.nav_cost_journal;
-    final int navLogout = R.id.nav_logout;
+    final int navLogoutId = R.id.nav_logout;
+    final int navMeetingsId = R.id.nav_meetings;
+    final int navPlacesId = R.id.nav_places;
+    final int navRoutesId = R.id.nav_routes;
 
     public HomeFragment() {}
 
@@ -92,9 +75,6 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        activity = getActivity();
-        context = getContext();
-
         init(view);
 
         list = new ArrayList<>();
@@ -103,47 +83,23 @@ public class HomeFragment extends Fragment {
 
         loadDataFromFirestore();
 
-        adapter.OnPressed(new HomeAdapter.OnPressed() {
-            @Override
-            public void onLiked(int position, String id, String uid, List<String> likes, boolean isChecked) {
+        adapter.OnPressed((position, id, uid, likes, isChecked) -> {
 
-                DocumentReference reference = FirebaseFirestore.getInstance().collection("Users")
-                        .document(uid)
-                        .collection("Post Images")
-                        .document(id);
+            DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Users")
+                    .document(uid)
+                    .collection("Post Images")
+                    .document(id);
 
-                if (likes.contains(user.getUid())) {
-                    likes.remove(user.getUid()); // unlike
-                } else {
-                    likes.add(user.getUid()); // like
-                }
-
-                Map<String, Object> map = new HashMap<>();
-                map.put("likes", likes);
-
-                reference.update(map);
+            if (likes.contains(user.getUid())) {
+                likes.remove(user.getUid());
+            } else {
+                likes.add(user.getUid());
             }
 
-            @Override
-            public void setCommentCount(final TextView textView) {
-                commentCount.observe((LifecycleOwner) activity, integer -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("likes", likes);
 
-                    assert commentCount.getValue() != null;
-
-                    if (commentCount.getValue() == 0) {
-                        textView.setVisibility(View.GONE);
-                    } else
-                        textView.setVisibility(View.VISIBLE);
-
-                    StringBuilder builder = new StringBuilder();
-                    builder.append("See all ")
-                            .append(commentCount.getValue())
-                            .append(" comments");
-
-                    textView.setText(builder);
-//                    textView.setText("See all " + commentCount.getValue() + " comments");
-                });
-            }
+            documentReference.update(map);
         });
 
         clickListener();
@@ -176,97 +132,40 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadDataFromFirestore() {
-
         final DocumentReference documentReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid());
 
-        final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users");
+        documentReference.get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot != null) {
+                List<String> uidList = (List<String>) documentSnapshot.get("following");
+                if (uidList == null || uidList.isEmpty()) return;
 
-        List<HomeModel> allPosts = new ArrayList<>();
+                Query allPostsQuery = FirebaseFirestore.getInstance().collectionGroup("Post Images")
+                        .whereIn("uid", uidList)
+                        .orderBy("timestamp", Query.Direction.DESCENDING);
 
-        documentReference.addSnapshotListener((value, error) -> {
+                allPostsQuery.addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        Log.d("Error: ", e.getMessage());
+                        return;
+                    }
 
-            if(error != null){
-                Log.d("Error: ", error.getMessage());
-                return;
+                    if (queryDocumentSnapshots == null) return;
+
+                    List<HomeModel> newPosts = new ArrayList<>();
+                    for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                        HomeModel model = doc.toObject(HomeModel.class);
+                        newPosts.add(model);
+                    }
+                    updatePostsList(newPosts);
+                });
             }
-
-            if(value == null)
-                return;
-
-            List<String> uidList = (List<String>) value.get("following");
-
-            if (uidList == null || uidList.isEmpty())
-                return;
-
-            collectionReference.whereIn("uid", uidList)
-                    .addSnapshotListener((value1, error1) -> {
-
-                        if (error1 != null) {
-                            Log.d("Error1: ", error1.getMessage());
-                        }
-
-                        if (value1 == null)
-                            return;
-
-                        list.clear();
-
-                        for(QueryDocumentSnapshot snapshot : value1){
-
-                            snapshot.getReference().collection("Post Images")
-                                    .orderBy("timestamp", Query.Direction.DESCENDING)
-                                    .addSnapshotListener((value2, error2) -> {
-
-                                        if (error2 != null) {
-                                            Log.d("Error2: ", error2.getMessage());
-                                        }
-
-                                        if (value2 == null)
-                                            return;
-
-                                        for (final QueryDocumentSnapshot snapshot1 : value2){
-
-                                            if(!snapshot1.exists())
-                                                return;
-
-                                            HomeModel model = snapshot1.toObject(HomeModel.class);
-
-                                            allPosts.add(new HomeModel(
-                                                    model.getName(),
-                                                    model.getProfileImage(),
-                                                    model.getImageUrl(),
-                                                    model.getUid(),
-                                                    model.getDescription(),
-                                                    model.getId(),
-                                                    model.getTimestamp(),
-                                                    model.getLikes()));
-
-                                            snapshot1.getReference().collection("Comments").get()
-                                                    .addOnCompleteListener(task -> {
-
-                                                        if (task.isSuccessful()) {
-
-                                                            Map<String, Object> map = new HashMap<>();
-                                                            for (QueryDocumentSnapshot commentSnapshot : task.getResult()) {
-                                                                map = commentSnapshot.getData();
-                                                            }
-
-                                                            commentCount.setValue(map.size());
-
-                                                        }else{
-                                                            //Toast.makeText(context, "Comments couldnt be loaded", Toast.LENGTH_SHORT).show();
-                                                            Log.d("Comments didnt load: ", task.getException().getMessage());
-                                                        }
-
-                                                    });
-                                        }
-                                        allPosts.sort((post1, post2) -> post2.getTimestamp().compareTo(post1.getTimestamp()));
-                                        list.clear();
-                                        list.addAll(allPosts);
-                                        adapter.notifyDataSetChanged();
-                                    });
-                        }
-                    });
         });
+    }
+
+    private void updatePostsList(List<HomeModel> newPosts) {
+        list.clear();
+        list.addAll(newPosts);
+        adapter.notifyDataSetChanged();
     }
 
     private void clickListener(){
@@ -288,20 +187,34 @@ public class HomeFragment extends Fragment {
                     drawerLayout.closeDrawer(GravityCompat.START);
                     break;
 
-                case navLogout:
+                case navLogoutId:
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                    builder.setTitle("Logout");
-                    builder.setMessage("Are you sure you want to logout?");
-                    builder.setPositiveButton("Yes", (dialog, which) -> {
+                    builder.setTitle("Wyloguj");
+                    builder.setMessage("Czy na pewno chcesz się wylogować?");
+                    builder.setPositiveButton("Tak", (dialog, which) -> {
                         if(auth.getCurrentUser() != null) {
                             startActivity(new Intent(getActivity().getApplicationContext(), ReplacerActivity.class));
                             auth.signOut();
                         }
                     });
-                    builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+                    builder.setNegativeButton("Nie", (dialog, which) -> dialog.dismiss());
                     builder.show();
 
                     break;
+
+                case navMeetingsId:
+                    ((MainActivity) getActivity()).switchFragment(new MeetingFragment());
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    break;
+
+                case navPlacesId:
+                    ((MainActivity) getActivity()).switchFragment(new InterestingPlacesFragment());
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    break;
+
+                case navRoutesId:
+                    ((MainActivity) getActivity()).switchFragment(new RouteFragment());
+                    drawerLayout.closeDrawer(GravityCompat.START);
 
                 default:
                     return false;

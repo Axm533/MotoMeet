@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="circleBtnWidth">50dp</dimen>
+    <dimen name="circleBtnHeight">50dp</dimen>
+    <dimen name="prof_img_width">52dp</dimen>
+    <dimen name="prof_img_height">52dp</dimen>
+</resources>

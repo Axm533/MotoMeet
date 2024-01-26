@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp"
-    android:background="@color/white">
+    android:background="@color/grey">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        android:background="@color/white"
+        android:background="@color/red"
         android:elevation="2dp"
         android:layout_alignParentTop="true"
         app:contentInsetStart="0dp"
@@ -24,8 +24,8 @@
 
             <ImageButton
                 android:id="@+id/returnBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_margin="4dp"
                 android:background="@drawable/baseline_circle_24"
@@ -33,33 +33,22 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="4dp"
                 android:src="@drawable/baseline_arrow_back_24"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/returnBtnContDesc" />
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Wpis do ksiazki"
+                android:text="@string/serviceBookEntryTitle"
                 android:textStyle="bold"
-                android:textSize="18dp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
-
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/title_textTV"
-        android:text="Dodaj wpis do ksiazki serwisowej"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,21 +61,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/serviceNameTV"
-            android:text="Nazwa przegladu"
-            android:textColor="@color/black"/>
+            android:text="@string/serviceNameTV"
+            android:textColor="@color/white"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/serviceNameET"
             android:layout_marginBottom="8dp"
-            android:hint="nazwa"/>
+            android:hint="@string/serviceNameHint"
+            android:inputType="text"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/serviceDescriptionTV"
-            android:text="Szczegolowy opis"
+            android:text="@string/serviceDescriptionTV"
             android:textColor="@color/black"/>
 
         <EditText
@@ -94,13 +84,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/serviceDescriptionET"
             android:layout_marginBottom="8dp"
-            android:hint="opis"/>
+            android:hint="@string/serviceDescriptionHint"
+            android:inputType="text"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/serviceCostTV"
-            android:text="Koszt przegladu"
+            android:text="@string/serviceCostTV"
             android:textColor="@color/black"/>
 
         <EditText
@@ -108,7 +99,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/serviceCostET"
             android:layout_marginBottom="8dp"
-            android:hint="koszt"/>
+            android:hint="@string/serviceCostHint"
+            android:inputType="text"/>
 
     </LinearLayout>
 
@@ -117,13 +109,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/switch_layout"
         android:orientation="vertical"
-        android:layout_below="@+id/linearLayout">
+        android:layout_below="@+id/linearLayout"
+        android:padding="8dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wykonane czynnosci serwisowe:"
-            android:textColor="@color/black"
+            android:text="@string/doneServicesTV"
+            android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="18sp"/>
 
@@ -131,52 +124,58 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/oilSwitch"
-            android:text="Olej"
+            android:text="@string/oilSwitch"
+            android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/oilFilterSwitch"
-            android:text="Filtr oleju"
+            android:text="@string/oilFilterSwitch"
+            android:textColor="@color/white"
             android:layout_marginBottom="8dp" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/sparkPlugsSwitch"
-            android:text="Swiece zaplonowe"
+            android:text="@string/sparkPlugsSwitch"
+            android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/driveUnitSwitch"
-            android:text="Konserwacja zespolu napedowego"
+            android:text="@string/driveUnitSwitch"
+            android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/valveClearanceSwitch"
-            android:text="Regulacja luzu zaworowego"
+            android:text="@string/valveClearanceSwitch"
+            android:textColor="@color/white"
             android:layout_marginBottom="8dp"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/breakFluidSwitch"
-            android:text="Plyn hamulcowy"
+            android:text="@string/breakFluidSwitch"
+            android:textColor="@color/white"
             android:layout_marginBottom="8dp" />
 
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addEntryBtn"
-        android:text="Dodaj wpis"
-        android:background="@drawable/btn_bg"
+        android:text="@string/addEntryBtn"
+        android:background="@drawable/button_background"
         android:layout_gravity="center_horizontal"
         android:layout_below="@id/switch_layout"
         android:layout_centerHorizontal="true"

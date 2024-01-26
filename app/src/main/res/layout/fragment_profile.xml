@@ -4,34 +4,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.ProfileFragment">
+    tools:context=".fragments.ProfileFragment"
+    android:background="@color/grey">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/white"
+        android:background="@color/red"
         android:elevation="2dp"
         android:layout_alignParentTop="true"
         app:contentInsetStart="0dp"
         app:contentInsetEnd="0dp">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/toolbarNameTV"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="Username"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                android:textColor="@color/black"/>
-
-        </RelativeLayout>
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/toolbarNameTV"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:text="@string/nameTV"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:textColor="@color/black"/>
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -47,13 +43,16 @@
             android:layout_height="100dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImage"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:id="@+id/profileImage"
-                app:civ_border_color="#76D1FA"
-                app:civ_border_width="1dp"
+                android:layout_marginStart="14dp"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="14dp"
                 android:src="@drawable/baseline_person_24"
-                android:layout_margin="14dp"/>
+                app:civ_border_color="@color/red"
+                app:civ_border_width="1dp" />
 
             <ImageButton
                 android:id="@+id/edit_profileImage"
@@ -80,9 +79,9 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:id="@+id/nameTV"
-                android:text="Username"
+                android:text="@string/nameTV"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:padding="4dp"/>
 
             <TextView
@@ -90,9 +89,9 @@
                 android:layout_height="wrap_content"
                 android:maxLines="3"
                 android:id="@+id/statusTV"
-                android:text="Status"
+                android:text="@string/statusTV"
                 android:textStyle="bold"
-                android:textColor="@color/black"
+                android:textColor="@color/red"
                 android:padding="4dp"/>
 
         </LinearLayout>
@@ -110,7 +109,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/countLayout"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:baselineAligned="false">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -122,19 +122,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/followingCountTV"
-                    android:text="Following Count"
+                    android:text="0"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     android:gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Following"
+                    android:text="@string/followingTV"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     android:gravity="center_horizontal"/>
 
             </LinearLayout>
@@ -149,19 +149,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/followersCountTV"
-                    android:text="Followers Count"
+                    android:text="0"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     android:gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Followers"
+                    android:text="@string/followersTV"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     android:gravity="center_horizontal"/>
 
             </LinearLayout>
@@ -176,19 +176,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/postCountTV"
-                    android:text="Post Count"
+                    android:text="0"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     android:gravity="center_horizontal"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Posts"
+                    android:text="@string/postsTV"
                     android:textStyle="bold"
                     android:textAlignment="center"
-                    android:textColor="@color/black"
+                    android:textColor="@color/red"
                     android:gravity="center_horizontal"/>
 
             </LinearLayout>
@@ -205,27 +205,26 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/startChatBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp"
-                android:background="@drawable/btn_bg"
+                android:background="@drawable/button_background"
                 android:minWidth="160dp"
-                android:text="Send message"
+                android:text="@string/sendMessageTV"
                 android:textColor="@android:color/white"
                 android:visibility="gone" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/followBtn"
-                android:text="Follow"
-                android:background="@drawable/btn_bg"
+                android:text="@string/followBtn"
+                android:background="@drawable/button_background"
                 android:textColor="@color/white"
                 android:minWidth="160dp"
-                android:layout_centerHorizontal="true"
                 android:layout_marginStart="4dp"
                 android:visibility="visible"/>
 
@@ -246,6 +245,6 @@
         android:id="@+id/recView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/view"/>
+        android:layout_below="@id/view" />
 
 </RelativeLayout>

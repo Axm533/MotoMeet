@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/grey">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profImage"
@@ -26,15 +27,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/nameTv"
-            android:text="Username"
+            android:text="@string/nameTV"
             android:textStyle="bold"
-            android:textColor="#000"/>
+            android:textColor="@color/red"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/timeTv"
-            android:text="time of posting"
+            android:text="@string/postTimeTV"
             android:textColor="#000"/>
 
     </LinearLayout>
@@ -44,7 +45,8 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:layout_below="@id/profImage"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:contentDescription="@string/postImgContDesc"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -53,7 +55,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/imageView">
 
-        <CheckBox
+        <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/likeBtn"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -65,14 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:id="@+id/commentBtn"
-            android:background="@drawable/baseline_comment_24"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:id="@+id/shareBtn"
-            android:background="@drawable/baseline_share_24"/>
+            android:background="@drawable/baseline_comment_24"
+            android:contentDescription="@string/commentContDesc" />
 
     </LinearLayout>
 
@@ -81,28 +77,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/descTv"
         android:textStyle="bold"
-        android:text="Description"
+        android:text="@string/postDescriptionTV"
         android:layout_below="@id/linearLayout"
         android:paddingStart="8dp"
-        android:paddingEnd="8dp"/>
+        android:paddingEnd="8dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/likeCountTv"
         android:textStyle="bold"
-        android:text="likes"
+        android:text="@string/likeCountTV"
         android:layout_below="@id/descTv"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"/>
-
-    <TextView
-        android:id="@+id/commentTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/likeCountTv"
-        android:padding="8dp"
-        android:text="View all comments"
-        android:visibility="gone" />
 
 </RelativeLayout>

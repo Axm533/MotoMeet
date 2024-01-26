@@ -1,19 +1,17 @@
 package com.example.motomeet.model;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
-import java.util.Date;
-
 public class CostJournalModel {
-    private String fuelCost, entryDate, highwayCost, additionalCost, id, uid;
+    private String fuelCost, highwayCost, additionalCost, id, uid;
 
     @ServerTimestamp
-    private Date timestamp;
+    private Timestamp entryDate, timestamp;
 
-    public CostJournalModel() {
-    }
+    public CostJournalModel() {}
 
-    public CostJournalModel(String fuelCost, String entryDate, String highwayCost, String additionalCost, String id, String uid, Date timestamp) {
+    public CostJournalModel(String fuelCost, Timestamp entryDate, String highwayCost, String additionalCost, String id, String uid, Timestamp timestamp) {
         this.fuelCost = fuelCost;
         this.entryDate = entryDate;
         this.highwayCost = highwayCost;
@@ -31,11 +29,11 @@ public class CostJournalModel {
         this.fuelCost = fuelCost;
     }
 
-    public String getEntryDate() {
+    public Timestamp getEntryDate() {
         return entryDate;
     }
 
-    public void setEntryDate(String entryDate) {
+    public void setEntryDate(Timestamp entryDate) {
         this.entryDate = entryDate;
     }
 
@@ -71,11 +69,11 @@ public class CostJournalModel {
         this.uid = uid;
     }
 
-    public Date getTimestamp() {
+    public Timestamp getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 }

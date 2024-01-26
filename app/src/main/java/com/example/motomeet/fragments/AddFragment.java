@@ -1,19 +1,20 @@
 package com.example.motomeet.fragments;
 
-import static android.Manifest.permission.MANAGE_EXTERNAL_STORAGE;
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.READ_MEDIA_IMAGES;
-import static android.Manifest.permission.READ_MEDIA_VIDEO;
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.app.Activity.RESULT_OK;
 
 import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -42,9 +43,7 @@ import com.google.firebase.storage.StorageReference;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.DexterError;
 import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.PermissionRequestErrorListener;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
@@ -61,10 +60,12 @@ public class AddFragment extends Fragment {
     private EditText descET;
     private ImageView imageViewAddPost;
     private RecyclerView recyclerView;
-    private ImageButton backBtn, nextBtn;
+    private AppCompatButton addEntryBtn;
     private List<GalleryImages> list;
     private GalleryAdapter adapter;
     private FirebaseUser user;
+
+    private ActivityResultLauncher<Intent> cropImageActivityLauncher;
     public AddFragment() {}
 
     @Override
@@ -94,8 +95,7 @@ public class AddFragment extends Fragment {
         descET = view.findViewById(R.id.descriptionET);
         imageViewAddPost = view.findViewById(R.id.imageViewAddPost);
         recyclerView = view.findViewById(R.id.recyclerView);
-        backBtn = view.findViewById(R.id.backBtn);
-        nextBtn = view.findViewById(R.id.nextBtn);
+        addEntryBtn = view.findViewById(R.id.addEntryBtn);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -103,15 +103,32 @@ public class AddFragment extends Fragment {
         dialog.setContentView(R.layout.loading_dialog);
         dialog.getWindow().setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.dialog_background, null));
         dialog.setCancelable(false);
+
+        cropImageActivityLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        CropImage.ActivityResult cropResult = CropImage.getActivityResult(result.getData());
+                        imageUri = cropResult.getUri();
+                        Glide.with(getContext()).load(imageUri).into(imageViewAddPost);
+                        imageViewAddPost.setVisibility(View.VISIBLE);
+                        addEntryBtn.setVisibility(View.VISIBLE);
+                    }
+                }
+        );
     }
     private void clickListener() {
 
-        adapter.SendImage(picUri -> CropImage.activity(picUri)
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .setAspectRatio(4, 3)
-                .start(getContext(), AddFragment.this));
+        adapter.SendImage(picUri -> {
+            Intent intent = CropImage.activity(picUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(4, 3)
+                    .getIntent(getContext());
+            cropImageActivityLauncher.launch(intent);
+        });
 
-        nextBtn.setOnClickListener(v -> {
+
+        addEntryBtn.setOnClickListener(v -> {
 
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageReference = storage.getReference().child("Post Images/" + System.currentTimeMillis());
@@ -128,6 +145,7 @@ public class AddFragment extends Fragment {
                         }
                     });
         });
+
     }
     private void uploadData(String imageURL) {
 
@@ -161,6 +179,7 @@ public class AddFragment extends Fragment {
                 });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     @Override
     public void onResume() {
         super.onResume();
@@ -200,34 +219,7 @@ public class AddFragment extends Fragment {
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();
                     }
-                }).withErrorListener(new PermissionRequestErrorListener() {
-                    @Override
-                    public void onError(DexterError dexterError) {
-                        Toast.makeText(getContext(), "Error"+dexterError.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                }).check());
+                }).withErrorListener(dexterError -> Toast.makeText(getContext(), "Error"+dexterError.toString(), Toast.LENGTH_SHORT).show()).check());
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-
-            if (resultCode == RESULT_OK) {
-
-                assert result != null;
-                imageUri = result.getUri();
-
-                Glide.with(getContext())
-                        .load(imageUri)
-                        .into(imageViewAddPost);
-
-                imageViewAddPost.setVisibility(View.VISIBLE);
-                nextBtn.setVisibility(View.VISIBLE);
-            }
-        }
-    }
 }

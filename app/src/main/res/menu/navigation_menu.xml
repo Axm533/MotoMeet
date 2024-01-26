@@ -5,14 +5,26 @@
 
     <item
         android:id="@+id/nav_service_book"
-        android:title="Service Book" />
+        android:title="@string/serviceBookNav" />
 
     <item
         android:id="@+id/nav_cost_journal"
-        android:title="Cost Journal" />
+        android:title="@string/costJournalNav" />
+
+    <item
+        android:id="@+id/nav_meetings"
+        android:title="@string/meetingsNav"/>
+
+    <item
+        android:id="@+id/nav_places"
+        android:title="@string/placesNav"/>
+
+    <item
+        android:id="@+id/nav_routes"
+        android:title="@string/routesNav"/>
 
     <item
         android:id="@+id/nav_logout"
-        android:title="Logout" />
+        android:title="@string/logoutNav" />
 
 </menu>

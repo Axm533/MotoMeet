@@ -3,14 +3,15 @@ package com.example.motomeet.model;
 import com.google.firebase.firestore.ServerTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 public class PostImageModel {
-    private String imageUrl, id, description, uid;
+    private String imageUrl, id, description, uid, name, profileImage;
+    List<String> likes;
     @ServerTimestamp
     private Date timestamp;
 
-    public PostImageModel() {
-    }
+    public PostImageModel() {}
 
     public PostImageModel(String imageUrl, String id, String description, String uid, Date timestamp) {
         this.imageUrl = imageUrl;
@@ -58,5 +59,29 @@ public class PostImageModel {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public List<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<String> likes) {
+        this.likes = likes;
     }
 }

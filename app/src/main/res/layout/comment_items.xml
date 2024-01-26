@@ -3,28 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="6dp">
+    android:padding="6dp"
+    android:background="@color/grey">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage"
         android:layout_width="52dp"
         android:layout_height="52dp"
-        app:civ_border_color="@color/purple_500"
-        app:civ_border_width="2dp" />
+        android:src="@color/black"
+        app:civ_border_color="@color/red"
+        app:civ_border_width="3dp" />
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/nameTV"
         android:padding="6dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:text="@string/nameTV"
+        android:textColor="@color/red"
         android:layout_toEndOf="@id/profileImage" />
 
     <TextView
-        android:id="@+id/commentTV"
-        android:padding="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/commentTV"
+        android:padding="6dp"
         android:layout_below="@id/nameTV"
-        android:layout_toEndOf="@id/profileImage" />
+        android:layout_toEndOf="@id/profileImage"
+        android:text="Komentarz"
+        android:textColor="@color/white"/>
 
 </RelativeLayout>

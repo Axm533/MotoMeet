@@ -1,4 +1,4 @@
-package com.example.motomeet.fragments;
+package com.example.motomeet.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.motomeet.R;
 import com.example.motomeet.model.UserModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 
@@ -21,7 +19,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
 
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     OnUserClicked onUserClicked;
     List<UserModel> list;
 
@@ -38,13 +35,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull UserHolder holder, final int position) {
-
-        if (list.get(position).getUid().equals(user.getUid())) {
-            holder.relativeLayout.setVisibility(View.GONE);
-            holder.itemView.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
-        } else {
-            holder.relativeLayout.setVisibility(View.VISIBLE);
-        }
 
         holder.nameTV.setText(list.get(position).getName());
         holder.statusTV.setText(list.get(position).getStatus());

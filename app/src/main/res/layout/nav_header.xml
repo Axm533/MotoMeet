@@ -4,12 +4,13 @@
     android:layout_height="100dp"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/purple_500">
+    android:background="@color/red">
 
     <TextView
         android:id="@+id/header_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Menu"
+        android:text="@string/navDrawerTitle"
+        android:textColor="@color/black"
         android:textSize="40sp" />
 </LinearLayout>

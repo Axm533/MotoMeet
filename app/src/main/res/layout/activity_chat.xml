@@ -7,19 +7,18 @@
     tools:context=".ChatActivity">
 
     <RelativeLayout
-        android:layout_marginTop="12dp"
         android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
-
+        android:padding="8dp"
+        android:background="@color/grey">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profileImage"
-            android:layout_width="52dp"
-            android:layout_height="52dp"
+            android:layout_width="@dimen/prof_img_width"
+            android:layout_height="@dimen/prof_img_height"
             android:layout_centerVertical="true"
-            android:src="@color/purple_500"
+            android:src="@color/red"
             app:civ_border_color="@color/material_blue_grey_80"
             app:civ_border_width="2dp" />
 
@@ -35,19 +34,19 @@
                 android:id="@+id/nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Name......"
+                android:text="@string/nameTV"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/statusTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Online"
+                android:text="@string/statusTV"
                 android:textSize="12sp"
-                android:textColor="@color/purple_500"
+                android:textColor="@color/red"
                 android:textStyle="bold" />
-
 
         </LinearLayout>
 
@@ -61,7 +60,6 @@
         android:layout_below="@id/topLayout"
         android:layout_margin="8dp" />
 
-
     <RelativeLayout
         android:id="@+id/chatLayout"
         android:layout_width="match_parent"
@@ -71,28 +69,26 @@
 
         <EditText
             android:id="@+id/chatET"
-            android:layout_width="match_parent"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:background="@drawable/text_box"
             android:backgroundTint="@color/material_blue_grey_80"
-            android:hint="Type here ..."
+            android:hint="@string/chatHint"
             android:layout_marginEnd="4dp"
             android:layout_toStartOf="@id/sendBtn"
             android:padding="12dp"
-            tools:ignore="HardcodedText,UnusedAttribute" />
+            android:inputType="text"/>
 
         <ImageView
             android:id="@+id/sendBtn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/circleBtnWidth"
+            android:layout_height="@dimen/circleBtnHeight"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:background="@drawable/baseline_circle_24"
-            android:backgroundTint="@color/purple_500"
             android:padding="8dp"
-            android:src="@drawable/send_white"
-            tools:ignore="UnusedAttribute" />
-
+            android:src="@drawable/baseline_send_24"
+            android:contentDescription="@string/sendMessageContDesc" />
 
     </RelativeLayout>
 

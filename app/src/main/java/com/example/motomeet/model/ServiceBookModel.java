@@ -1,19 +1,14 @@
 package com.example.motomeet.model;
 
-import com.example.motomeet.adapter.ServiceBookAdapter;
 import com.google.firebase.firestore.ServerTimestamp;
-
 import java.util.Date;
 
 public class ServiceBookModel {
-
     private String serviceName, serviceDescription, serviceCost, doneServices, id, uid;
-
     @ServerTimestamp
     private Date timestamp;
 
-    public ServiceBookModel() {
-    }
+    public ServiceBookModel() {}
 
     public ServiceBookModel(String serviceName, String serviceDescription, String serviceCost, String doneServices, String id, String uid){
         this.serviceName = serviceName;
@@ -31,13 +26,11 @@ public class ServiceBookModel {
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
-
     public String getServiceDescription() {
         return serviceDescription;
     }
 
     public void setServiceDescription(String serviceDescription) { this.serviceDescription = serviceDescription;}
-
     public String getServiceCost() {
         return serviceCost;
     }
@@ -61,7 +54,6 @@ public class ServiceBookModel {
     public void setUid(String uid) {
         this.uid = uid;
     }
-
     public String getDoneServices() {
         return doneServices;
     }

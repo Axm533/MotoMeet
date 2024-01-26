@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@color/grey">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage"
@@ -21,8 +22,8 @@
         android:layout_marginStart="4dp"
         android:layout_toStartOf="@id/timeTv"
         android:layout_toEndOf="@id/profileImage"
-        android:text="Marsad"
-        android:textColor="@color/black"
+        android:text="@string/nameHint"
+        android:textColor="@color/red"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -35,8 +36,8 @@
         android:layout_marginStart="4dp"
         android:layout_toStartOf="@id/messageCountTV"
         android:layout_toEndOf="@id/profileImage"
-        android:text="This is message"
-        android:textColor="@color/material_blue_grey_90" />
+        android:text="Wiadomość"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/timeTv"
@@ -44,8 +45,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="4dp"
-        android:text="Now"
-        android:textColor="@color/purple_200" />
+        android:text="Teraz"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/messageCountTV"
@@ -55,10 +56,9 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="4dp"
         android:background="@drawable/baseline_circle_24"
-        android:backgroundTint="@color/purple_500"
+        android:backgroundTint="@color/red"
         android:gravity="center"
-        android:text="2"
-        android:textColor="@color/white"
-        tools:targetApi="lollipop" />
+        android:text="0"
+        android:textColor="@color/white"/>
 
 </RelativeLayout>

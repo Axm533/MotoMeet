@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="8dp"
     android:elevation="10dp"
-    android:background="@color/white">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout"
-        android:orientation="vertical">
+    android:id="@+id/linearLayout"
+    android:orientation="vertical"
+    android:background="@color/grey">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,16 +17,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Koszt paliwa: "
-                android:textColor="@color/black"
+                android:text="@string/fuelCostTV"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/fuelCostTV"
-                android:text="  koszt "
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -43,16 +38,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Data wpisu: "
-                android:textColor="@color/black"
+                android:text="@string/entryDateTV"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/entryDateTV"
-                android:text="  data "
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"/>
 
 
         </LinearLayout>
@@ -66,16 +60,15 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Koszt autostrad: "
-                android:textColor="@color/black"
+                android:text="@string/highwayCostTV"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/highwayCostTV"
-                android:text="  koszt "
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
@@ -88,19 +81,16 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Koszty dodatkowe: "
-                android:textColor="@color/black"
+                android:text="@string/additionalCostTV"
+                android:textColor="@color/white"
                 android:textStyle="bold"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/additionalCostTV"
-                android:text="  koszt "
-                android:textColor="@color/black"/>
+                android:textColor="@color/white"/>
 
         </LinearLayout>
 
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp"
-    android:background="@color/white">
+    android:background="@color/grey">
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:id="@+id/toolbar"
-        android:background="@color/white"
+        android:background="@color/red"
         android:elevation="2dp"
         android:layout_alignParentTop="true"
         app:contentInsetStart="0dp"
@@ -24,24 +24,24 @@
 
             <ImageButton
                 android:id="@+id/returnBtn"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_margin="4dp"
                 android:background="@drawable/baseline_circle_24"
                 android:elevation="3dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:padding="4dp"
                 android:src="@drawable/baseline_arrow_back_24"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/returnBtnContDesc" />
 
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Wpis do ksiazki"
+                android:text="@string/costJournalEntryTitle"
                 android:textStyle="bold"
-                android:textSize="18dp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
                 android:layout_centerVertical="true"/>
 
@@ -60,21 +60,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fuelCostTV"
-            android:text="Koszt paliwa"
-            android:textColor="@color/black"/>
+            android:text="@string/fuelCostTV"
+            android:textColor="@color/white" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/fuelCostET"
             android:layout_marginBottom="8dp"
-            android:hint="koszt paliwa"/>
+            android:hint="@string/fuelCostHint"
+            android:textColor="@color/white"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/highwayCostTV"
+            android:text="@string/highwayCostTV"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/highwayCostET"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/highwayCostHint"
+            android:textColor="@color/white"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/additionalCostTV"
+            android:text="@string/additionalCostTV"
+            android:textColor="@color/white"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/additionalCostET"
+            android:layout_marginBottom="8dp"
+            android:hint="@string/additionalCostHint"
+            android:textColor="@color/white"
+            android:inputType="numberDecimal"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/entryDateTV"
-            android:text="Data wpisu"
+            android:text="@string/entryDateTV"
             android:textColor="@color/black"/>
 
         <CalendarView
@@ -82,42 +116,14 @@
             android:layout_height="match_parent"
             android:id="@+id/entryDateCV" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/highwayCostTV"
-            android:text="Koszt autostrad"
-            android:textColor="@color/black"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/highwayCostET"
-            android:layout_marginBottom="8dp"
-            android:hint="Koszt"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/additionalCostTV"
-            android:text="Koszty dodatkowe"
-            android:textColor="@color/black"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/additionalCostET"
-            android:layout_marginBottom="8dp"
-            android:hint="koszt "/>
-
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addEntryBtn"
-        android:text="Dodaj wpis"
-        android:background="@drawable/btn_bg"
+        android:text="@string/addEntryBtn"
+        android:background="@drawable/button_background"
         android:layout_gravity="center_horizontal"
         android:layout_below="@id/linearLayout"
         android:layout_centerHorizontal="true"

@@ -11,8 +11,6 @@ import com.example.motomeet.fragments.CommentFragment;
 import com.example.motomeet.fragments.CreateAccountFragment;
 import com.example.motomeet.fragments.LoginFragment;
 
-import org.w3c.dom.Comment;
-
 public class ReplacerActivity extends AppCompatActivity {
     private FrameLayout frameLayout;
 

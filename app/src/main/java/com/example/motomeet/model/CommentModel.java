@@ -4,8 +4,7 @@ public class CommentModel {
 
     String comment, commentID, postID, uid, name, profileImageUrl;
 
-    public CommentModel() {
-    }
+    public CommentModel() {}
 
     public CommentModel(String comment, String commentID, String postID, String uid, String name, String profileImageUrl) {
         this.comment = comment;

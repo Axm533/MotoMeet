@@ -6,12 +6,12 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -19,13 +19,11 @@ import android.widget.Toast;
 
 import com.example.motomeet.ReplacerActivity;
 import com.example.motomeet.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class ForgotPasswordFragment extends Fragment {
     private TextView returnToLoginTv;
-    private Button recoverBtn;
+    private AppCompatButton recoverBtn;
     private EditText emailEt;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
@@ -48,7 +46,6 @@ public class ForgotPasswordFragment extends Fragment {
         recoverBtn = view.findViewById(R.id.recoverBtn);
         emailEt = view.findViewById(R.id.emailET);
         progressBar = view.findViewById(R.id.progressBar);
-
         auth = FirebaseAuth.getInstance();
     }
 
@@ -71,16 +68,13 @@ public class ForgotPasswordFragment extends Fragment {
                     .addOnCompleteListener(task -> {
 
                         if(task.isSuccessful()){
-                            Toast.makeText(getContext(), "Email sent",
-                                    Toast.LENGTH_SHORT).show();
-
+                            Toast.makeText(getContext(), "Email sent", Toast.LENGTH_SHORT).show();
                             emailEt.setText("");
                         }else{
-                            Toast.makeText(getContext(), "Error: "+task.getException().getMessage(),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Error: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
-
                         progressBar.setVisibility(View.GONE);
+
                     });
 
         });

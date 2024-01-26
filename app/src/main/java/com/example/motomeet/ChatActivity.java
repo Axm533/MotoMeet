@@ -52,8 +52,7 @@ public class ChatActivity extends AppCompatActivity {
 
             String message = chatET.getText().toString().trim();
 
-            if (message.isEmpty())
-                return;
+            if (message.isEmpty()) return;
 
             CollectionReference reference = FirebaseFirestore.getInstance().collection("Messages");
 

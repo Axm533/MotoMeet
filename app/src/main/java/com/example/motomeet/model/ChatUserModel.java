@@ -11,8 +11,7 @@ public class ChatUserModel {
     @ServerTimestamp
     private Date time;
 
-    public ChatUserModel() {
-    }
+    public ChatUserModel() {}
 
     public ChatUserModel(String id, String lastMessage, List<String> uid, Date time) {
         this.id = id;

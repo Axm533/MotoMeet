@@ -11,12 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/viewPager"
-        android:layout_above="@id/tabLayout"/>
+        android:layout_above="@id/tabLayout"
+        android:background="@color/grey"/>
 
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tabLayout"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true"
+        android:background="@color/red"
+        app:tabIndicatorColor="@color/black"
+        app:tabIconTint="@color/black"
+        app:tabPaddingStart="35dp"
+        app:tabPaddingEnd="35dp"/>
 
 </RelativeLayout>

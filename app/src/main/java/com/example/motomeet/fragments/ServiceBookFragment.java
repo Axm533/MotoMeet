@@ -2,7 +2,6 @@ package com.example.motomeet.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,19 +22,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceBookFragment extends Fragment {
-
-    private List<ServiceBookModel> entriesList;
-
+    private List<ServiceBookModel> list;
     ServiceBookAdapter adapter;
     RecyclerView recyclerView;
     private ImageButton addEntryBtn, returnBtn;
-
     private FirebaseUser user;
 
     public ServiceBookFragment(){}
@@ -45,9 +42,8 @@ public class ServiceBookFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_servicebook, container, false);
     }
 
@@ -56,7 +52,7 @@ public class ServiceBookFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         init(view);
-        adapter = new ServiceBookAdapter(entriesList);
+        adapter = new ServiceBookAdapter(list);
         recyclerView.setAdapter(adapter);
         loadEntries();
 
@@ -69,7 +65,7 @@ public class ServiceBookFragment extends Fragment {
 
         addEntryBtn = view.findViewById(R.id.addEntryBtn);
         returnBtn = view.findViewById(R.id.returnBtn);
-        entriesList = new ArrayList<>();
+        list = new ArrayList<>();
 
         recyclerView = view.findViewById(R.id.recyclerViewServiceBook);
         recyclerView.setHasFixedSize(true);
@@ -84,29 +80,19 @@ public class ServiceBookFragment extends Fragment {
 
         final CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).collection("ServiceBook");
 
-        collectionReference.addSnapshotListener((value, error) -> {
+        collectionReference.orderBy("timestamp", Query.Direction.DESCENDING)
+                .addSnapshotListener((value, error) -> {
 
-            if(error != null) {
-                Log.d("loadEntries error: ", error.getMessage());
-                return;
-            }
+            if(error != null) return;
 
-            if(value == null)
-                return;
+            if(value == null) return;
 
             for(QueryDocumentSnapshot snapshot : value){
-                if(!snapshot.exists())
-                    return;
+                if(!snapshot.exists()) return;
 
                 ServiceBookModel model = snapshot.toObject(ServiceBookModel.class);
 
-                entriesList.add(new ServiceBookModel(
-                        model.getServiceName(),
-                        model.getServiceDescription(),
-                        model.getServiceCost(),
-                        model.getDoneServices(),
-                        model.getId(),
-                        model.getUid()));
+                list.add(model);
 
             }
             adapter.notifyDataSetChanged();

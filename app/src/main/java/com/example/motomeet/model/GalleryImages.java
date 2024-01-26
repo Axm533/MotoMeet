@@ -5,8 +5,7 @@ import android.net.Uri;
 public class GalleryImages {
     public Uri picUri;
 
-    public GalleryImages() {
-    }
+    public GalleryImages() {}
 
     public GalleryImages(Uri picUri) {
         this.picUri = picUri;

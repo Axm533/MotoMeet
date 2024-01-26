@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.motomeet.R;
 import com.example.motomeet.model.CostJournalModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class CostJournalAdapter extends RecyclerView.Adapter<CostJournalAdapter.CostJournalHolder>{
 
@@ -31,7 +33,9 @@ public class CostJournalAdapter extends RecyclerView.Adapter<CostJournalAdapter.
     @Override
     public void onBindViewHolder(@NonNull CostJournalAdapter.CostJournalHolder holder, int position) {
         holder.fuelCostTV.setText(list.get(position).getFuelCost());
-        holder.entryDateTV.setText(list.get(position).getEntryDate());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String formattedDate = sdf.format(list.get(position).getEntryDate().toDate());
+        holder.entryDateTV.setText(formattedDate);
         holder.highwayCostTV.setText(list.get(position).getHighwayCost());
         holder.additionalCostTV.setText(list.get(position).getAdditionalCost());
     }

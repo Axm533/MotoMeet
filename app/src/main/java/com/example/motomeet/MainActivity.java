@@ -1,22 +1,11 @@
 package com.example.motomeet;
 
-import static com.example.motomeet.utils.Constants.PREF_DIRECTORY;
-import static com.example.motomeet.utils.Constants.PREF_NAME;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
-
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 
 import com.example.motomeet.adapter.ViewPagerAdapter;
 import com.example.motomeet.fragments.SearchFragment;
@@ -25,9 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,10 +47,9 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
         iconsList.add(R.drawable.outline_home_24);
         iconsList.add(R.drawable.baseline_search_24);
         iconsList.add(R.drawable.outline_add_box_24);
-        iconsList.add(R.drawable.outline_notifications_24);
         iconsList.add(R.drawable.baseline_person_outline_24);
 
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 4; i++){
             tabLayout.addTab(tabLayout.newTab().setIcon(iconsList.get(i)));
         }
 
@@ -98,11 +83,7 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                         break;
 
                     case 3:
-                        tabLayout.getTabAt(3).setIcon(R.drawable.baseline_notifications_24);
-                        break;
-
-                    case 4:
-                        tabLayout.getTabAt(4).setIcon(R.drawable.baseline_person_24);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.baseline_person_24);
                         break;
 
                 }
@@ -125,11 +106,7 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                         break;
 
                     case 3:
-                        tabLayout.getTabAt(3).setIcon(R.drawable.outline_notifications_24);
-                        break;
-
-                    case 4:
-                        tabLayout.getTabAt(4).setIcon(R.drawable.baseline_person_outline_24);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.baseline_person_outline_24);
                         break;
                 }
             }
@@ -151,11 +128,7 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
                         break;
 
                     case 3:
-                        tabLayout.getTabAt(3).setIcon(R.drawable.baseline_notifications_24);
-                        break;
-
-                    case 4:
-                        tabLayout.getTabAt(4).setIcon(R.drawable.baseline_person_24);
+                        tabLayout.getTabAt(3).setIcon(R.drawable.baseline_person_24);
                         break;
                 }
             }
@@ -166,12 +139,12 @@ public class MainActivity extends AppCompatActivity implements SearchFragment.On
     public void onChange(String uid) {
         USER_ID = uid;
         IS_SEARCHED_USER = true;
-        viewPager.setCurrentItem(4);
+        viewPager.setCurrentItem(3);
     }
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() == 4){
+        if (viewPager.getCurrentItem() == 3){
             viewPager.setCurrentItem(0);
             IS_SEARCHED_USER = false;
         } else {

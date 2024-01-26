@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,9 @@ import com.example.motomeet.model.HomeModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -53,23 +54,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         holder.usernameTv.setText(list.get(position).getName());
-        holder.timeTv.setText(""+list.get(position).getTimestamp());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        String formattedDate = sdf.format(list.get(position).getTimestamp().toDate());
+        holder.timeTv.setText(formattedDate);
+        //holder.timeTv.setText(""+list.get(position).getTimestamp());
 
         List<String> likes = list.get(position).getLikes();
 
-        int likesCount = likes.size();
+        holder.likeCountTv.setText(likes.size() + " polubień");
 
-        if(likesCount == 0){
-            holder.likeCountTv.setText("0 Likes");
-        } else if (likesCount == 1) {
-            holder.likeCountTv.setText(likesCount + " like");
-        }else{
-            holder.likeCountTv.setText(likesCount + " likes");
-        }
-
-        //assert user != null;
-        if(user != null)
-        {
+        if(user != null) {
             holder.likeCheckBox.setChecked(likes.contains(user.getUid()));
         }else{
             holder.likeCheckBox.setChecked(false);
@@ -95,10 +89,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
         holder.clickListener(position,
                 list.get(position).getId(),
-                list.get(position).getName(),
                 list.get(position).getUid(),
-                list.get(position).getLikes(),
-                list.get(position).getImageUrl());
+                list.get(position).getLikes());
     }
 
     @Override
@@ -112,14 +104,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
 
     public interface OnPressed {
         void onLiked(int position, String id, String uid, List<String> likes, boolean isChecked);
-        void setCommentCount(TextView textView);
     }
 
     class HomeHolder extends RecyclerView.ViewHolder{
         private final CircleImageView profileImage;
         private final TextView usernameTv, timeTv, likeCountTv, descriptionTv;
         private final ImageView imageView;
-        private final ImageButton commentBtn, shareBtn;
+        private final ImageButton commentBtn;
         private final CheckBox likeCheckBox;
 
         public HomeHolder(@NonNull View itemView) {
@@ -132,21 +123,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeHolder> {
             likeCountTv = itemView.findViewById(R.id.likeCountTv);
             likeCheckBox = itemView.findViewById(R.id.likeBtn);
             commentBtn = itemView.findViewById(R.id.commentBtn);
-            shareBtn = itemView.findViewById(R.id.shareBtn);
             descriptionTv = itemView.findViewById(R.id.descTv);
-
-            TextView commentTV = itemView.findViewById(R.id.commentTV);
-
-            onPressed.setCommentCount(commentTV);
         }
 
-        public void clickListener(final int position, final String id, String name, final String uid, final List<String> likes, final String imageUrl){
+        public void clickListener(final int position, final String id, final String uid, final List<String> likes){
 
             likeCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> onPressed.onLiked(position, id, uid ,likes, isChecked));
 
             commentBtn.setOnClickListener(v -> {
-
-                Log.d("LOG commfrag", "UID: "+uid + "\n\n" + "id: "+id);
 
                 Intent intent = new Intent(context, ReplacerActivity.class);
                 intent.putExtra("id", id);

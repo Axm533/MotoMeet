@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.motomeet.fragments.AddFragment;
 import com.example.motomeet.fragments.HomeFragment;
-import com.example.motomeet.fragments.NotificationFragment;
 import com.example.motomeet.fragments.ProfileFragment;
 import com.example.motomeet.fragments.SearchFragment;
 
@@ -35,9 +34,6 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
                 return new AddFragment();
 
             case 3:
-                return new NotificationFragment();
-
-            case 4:
                 return new ProfileFragment();
 
         }

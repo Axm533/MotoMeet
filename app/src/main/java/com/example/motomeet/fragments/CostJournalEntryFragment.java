@@ -13,16 +13,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.motomeet.MainActivity;
 import com.example.motomeet.R;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class CostJournalEntryFragment extends Fragment {
@@ -31,7 +38,9 @@ public class CostJournalEntryFragment extends Fragment {
 
     private CalendarView entryDateCV;
 
-    private Button addEntryBtn, returnBtn;
+    private Button addEntryBtn;
+
+    private ImageButton returnBtn;
 
     private FirebaseUser user;
 
@@ -51,13 +60,19 @@ public class CostJournalEntryFragment extends Fragment {
 
         init(view);
 
-        final String[] entryDate = new String[1];
+        final String[] pickedDate = new String[1];
 
-        entryDateCV.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            entryDate[0] = dayOfMonth + "." + month + "." + year;
+        entryDateCV.setOnDateChangeListener((view1, year, month, dayOfMonth)
+                -> pickedDate[0] = dayOfMonth + "." + (month+1) + "." + year);
+
+        addEntryBtn.setOnClickListener(v -> {
+
+            if(fuelCostET.getText().toString().isEmpty() || highwayCostET.getText().toString().isEmpty() || additionalCostET.getText().toString().isEmpty() || entryDateCV.toString().isEmpty()){
+                Toast.makeText(getContext(), "Uzupełnij wszystkie pola", Toast.LENGTH_SHORT).show();
+            }else {
+                uploadEntry(pickedDate[0]);
+            }
         });
-
-        addEntryBtn.setOnClickListener(v -> uploadEntry(entryDate[0]));
 
         returnBtn.setOnClickListener(v -> startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class)));
     }
@@ -72,23 +87,32 @@ public class CostJournalEntryFragment extends Fragment {
         returnBtn = view.findViewById(R.id.returnBtn);
     }
 
-    private void uploadEntry(String entryDate) {
+    private void uploadEntry(String pickedDate) {
 
         CollectionReference collectionReference = FirebaseFirestore.getInstance().collection("Users").document(user.getUid()).collection("CostJournal");
 
         String fuelCost = fuelCostET.getText().toString();
         String highwayCost = highwayCostET.getText().toString();
         String additionalCost = additionalCostET.getText().toString();
-
         String id = collectionReference.document().getId();
 
         Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("fuelCost", fuelCost);
-        map.put("highwayCost", highwayCost);
-        map.put("additionalCost", additionalCost);
-        map.put("entryDate", entryDate);
-        map.put("uid", user.getUid());
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
+        try {
+            Date date = sdf.parse(pickedDate);
+            Timestamp entryDate = new Timestamp(date);
+            map.put("id", id);
+            map.put("fuelCost", fuelCost);
+            map.put("highwayCost", highwayCost);
+            map.put("additionalCost", additionalCost);
+            map.put("entryDate", entryDate);
+            map.put("uid", user.getUid());
+            map.put("timestamp", FieldValue.serverTimestamp());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         collectionReference.document(id).set(map)
                 .addOnCompleteListener(task -> {

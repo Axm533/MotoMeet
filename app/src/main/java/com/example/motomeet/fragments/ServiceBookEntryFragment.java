@@ -5,21 +5,18 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
-import android.widget.TextView;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.motomeet.MainActivity;
 import com.example.motomeet.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -33,7 +30,9 @@ import java.util.Map;
 
 public class ServiceBookEntryFragment extends Fragment {
     private EditText serviceNameET, serviceDescriptionET, serviceCostET;
-    private Button addEntryBtn;
+    private AppCompatButton addEntryBtn;
+
+    private ImageButton returnBtn;
     private FirebaseUser user;
     private List<SwitchCompat> switchCompatList;
 
@@ -42,9 +41,8 @@ public class ServiceBookEntryFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView( LayoutInflater inflater, ViewGroup container,  Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_service_book_entry, container, false);
     }
 
@@ -55,6 +53,8 @@ public class ServiceBookEntryFragment extends Fragment {
 
         addEntryBtn.setOnClickListener(v -> uploadEntry());
 
+        returnBtn.setOnClickListener(v -> ((MainActivity) getActivity()).switchFragment(new ServiceBookFragment()));
+
     }
 
     private void init(View view) {
@@ -63,6 +63,7 @@ public class ServiceBookEntryFragment extends Fragment {
         serviceDescriptionET = view.findViewById(R.id.serviceDescriptionET);
         serviceCostET = view.findViewById(R.id.serviceCostET);
         addEntryBtn = view.findViewById(R.id.addEntryBtn);
+        returnBtn = view.findViewById(R.id.returnBtn);
         SwitchCompat oilSwitch = view.findViewById(R.id.oilSwitch);
         SwitchCompat oilFilterSwitch = view.findViewById(R.id.oilFilterSwitch);
         SwitchCompat sparkPlugsSwitch = view.findViewById(R.id.sparkPlugsSwitch);
@@ -109,7 +110,7 @@ public class ServiceBookEntryFragment extends Fragment {
         collectionReference.document(id).set(map)
                 .addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(getContext(), "Entry added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Wpis dodany", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
             }

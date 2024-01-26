@@ -51,16 +51,13 @@ public class ChatUserAdapter extends RecyclerView.Adapter<ChatUserAdapter.ChatUs
 
         fetchImageUrl(list.get(position).getUid(), holder);
 
-
         holder.time.setText(calculateTime(list.get(position).getTime()));
 
         holder.lastMessage.setText(list.get(position).getLastMessage());
 
-        holder.itemView.setOnClickListener(v ->
-                startChat.clicked(position, list.get(position).getUid(), list.get(position).getId()));
+        holder.itemView.setOnClickListener(v -> startChat.clicked(position, list.get(position).getUid(), list.get(position).getId()));
 
     }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     String calculateTime(Date date) {
         long millis = date.toInstant().toEpochMilli();
@@ -119,7 +116,6 @@ public class ChatUserAdapter extends RecyclerView.Adapter<ChatUserAdapter.ChatUs
 
         CircleImageView imageView;
         TextView name, lastMessage, time, count;
-
 
         public ChatUserHolder(@NonNull View itemView) {
             super(itemView);

@@ -9,8 +9,7 @@ public class ChatModel {
     @ServerTimestamp
     private Date time;
 
-    public ChatModel() {
-    }
+    public ChatModel() {}
 
     public ChatModel(String id, String message, String senderID, Date time) {
         this.id = id;

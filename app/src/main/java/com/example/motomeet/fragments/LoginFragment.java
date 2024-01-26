@@ -12,7 +12,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import androidx.appcompat.widget.AppCompatButton;
+
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -21,16 +22,13 @@ import android.widget.Toast;
 import com.example.motomeet.ReplacerActivity;
 import com.example.motomeet.MainActivity;
 import com.example.motomeet.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginFragment extends Fragment {
     private EditText emailEt, passwordEt;
     private TextView signUpTv, forgotPasswordTv;
-    private Button signInBtn;
+    private AppCompatButton signInBtn;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
     public LoginFragment() {
@@ -99,8 +97,7 @@ public class LoginFragment extends Fragment {
     }
     private void sendUserToMainActivity(){
 
-        if(getActivity() == null)
-            return;
+        if(getActivity() == null) return;
 
         progressBar.setVisibility(View.GONE);
         startActivity(new Intent(getActivity().getApplicationContext(), MainActivity.class));

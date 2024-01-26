@@ -4,14 +4,15 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayout"
-    android:padding="6dp">
+    android:padding="6dp"
+    android:background="@color/grey">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@color/purple_500"
-        app:civ_border_color="@color/purple_700"
+        android:src="@color/black"
+        app:civ_border_color="@color/red"
         app:civ_border_width="2dp" />
 
     <TextView
@@ -20,9 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/profileImage"
         android:padding="8dp"
-        android:text="Username"
+        android:text="@string/nameTV"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textColor="@color/white"/>
 
     <TextView
         android:id="@+id/statusTV"
@@ -32,7 +34,8 @@
         android:layout_toEndOf="@id/profileImage"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
-        android:text="Status"
+        android:text="@string/statusTV"
+        android:textColor="@color/red"
         android:textStyle="bold" />
 
 </RelativeLayout>
